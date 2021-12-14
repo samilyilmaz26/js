@@ -1,10 +1,18 @@
-const drinkList = document.querySelector("ul.list-group")
-const selectedrink= document.querySelectorAll("li.list-group-item")[2]
+const table = document.getElementById('table');
+let element 
+element = table
+element = element.classList
+table.classList.add("table-danger")
+table.classList.add("table-bordered") 
+table.classList.remove("table-bordered")
+element = table
 
-const newel =  document.createElement("li")
-newel.className="list-group-item"
-newel.textContent = "Pepsi"
-drinkList.replaceChild(newel,selectedrink)
+link = document.getElementById("link")
+element = link;
+element = link.getAttribute("href")
+link.setAttribute("href","www.https://cisco.com")
+element = link;
 
-console.log(drinkList)
-console.log(newel)
+element = link.hasAttribute("class")
+
+console.log(element)
