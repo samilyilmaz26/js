@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM Manipulation Demo</title>
+    <link rel="stylesheet" href="styles.css">
+    <script type="module" src="./util.js"></script>
+    <script type="module" src="./app.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <h1>DOM Manipulation Demo</h1>
+        
+        <section class="demo-section">
+            <h2>ID Selection Demo</h2>
+            <p id="a">a-1</p>
+            <p id="a">a-2</p>
+            <p id="b">bbbb</p>
+            <button id="goBtn">Get Element by ID</button>
+            <div id="idResult" class="result-display"></div>
+        </section>
+
+        <section class="demo-section">
+            <h2>Class Selection Demo</h2>
+            <p class="color">This is a paragraph-1</p>
+            <p class="color">This is a paragraph-2</p>
+            <p class="color">This is a paragraph-3</p>
+            <button id="classBtn">Get Elements by Class</button>
+            <div id="classResult" class="result-display"></div>
+        </section>
+
+        <section class="demo-section">
+            <h2>Tag Selection Demo</h2>
+            <ol id="drinks">
+                <li>Tea</li>
+                <li>Coffee</li>
+                <li>Water</li>
+            </ol>
+            <button id="drinkBtn">Get Elements by Tag</button>
+            <div id="tagResult" class="result-display"></div>
+        </section>
+
+        <section class="demo-section">
+            <h2>Query Selector Demo</h2>
+            <div class="query-demo">
+                <p class="query-test">Query Selector Test 1</p>
+                <p class="query-test">Query Selector Test 2</p>
+                <p class="query-test">Query Selector Test 3</p>
+            </div>
+            <button id="queryBtn">Test Query Selectors</button>
+            <div id="queryResult" class="result-display"></div>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiple Navbars Demo</title>
+    <script type="module" src="navbar.js"></script>
+    <script type="module" src="routing.js"></script>
+</head>
+<body>
+    <!-- First Navbar - Main Navigation -->
+    <custom-navbar 
+        theme="primary"
+        logo="MainApp"
+        menu-items='[
+            {"href": "#/", "text": "Home"},
+            {"href": "#/about", "text": "About"},
+            {"href": "#/contact", "text": "Contact"},
+            {"href": "#/users", "text": "Users"},
+            {"href": "#/samil", "text": "Samil"}
+        ]'>
+    </custom-navbar>
+
+    <!-- App content will be rendered here -->
+    <div id="app"></div>
+
+    <div style="margin: 20px;"></div>
+
+    <!-- Second Navbar - Different Theme and Menu Items -->
+    <custom-navbar 
+        theme="success"
+        logo="AdminPanel"
+        menu-items='[
+            {"href": "#/dashboard", "text": "Dashboard"},
+            {"href": "#/products", "text": "Products"},
+            {"href": "#/orders", "text": "Orders"},
+            {"href": "#/settings", "text": "Settings"},
+            {"href": "#/reports", "text": "Reports"}
+        ]'>
+    </custom-navbar>
+
+    <div style="margin: 20px;"></div>
+
+    <!-- Third Navbar - Another Theme and Different Items -->
+    <custom-navbar 
+        theme="warning"
+        logo="UserPortal"
+        menu-items='[
+            {"href": "#/profile", "text": "My Profile"},
+            {"href": "#/messages", "text": "Messages"},
+            {"href": "#/favorites", "text": "Favorites"},
+            {"href": "#/notifications", "text": "Notifications"}
+        ]'>
+    </custom-navbar>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Component Slot Example</title>
+    <script src="custom-card.js"></script>
+</head>
+<body>
+    <h1>Web Component Slot Example</h1>
+
+    <!-- Using the custom element with different content in slots -->
+    <custom-card>
+        <h2 slot="title">Welcome Message</h2>
+        <p slot="content">This is the main content of our card!</p>
+        <span slot="footer">Footer information here</span>
+    </custom-card>
+
+    <br>
+
+    <!-- Another instance with different content -->
+    <custom-card>
+        <h2 slot="title">Another Card</h2>
+        <p slot="content">Slots make it easy to create reusable components with customizable content.</p>
+        <span slot="footer">© 2024</span>
+    </custom-card>
+</body>
+</html> 
