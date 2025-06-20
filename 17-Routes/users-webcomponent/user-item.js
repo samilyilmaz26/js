@@ -15,59 +15,25 @@ class UserItem extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
-      <style>
-        :host {
-          display: block;
-          margin: 8px 0;
-          padding: 12px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-        .user-field {
-          margin: 4px 0;
-        }
-        .user-field span {
-          font-weight: bold;
-          margin-right: 8px;
-        }
-        .user-value {
-          display: inline-block;
-        }
-        .actions {
-          margin-top: 8px;
-        }
-        button {
-          padding: 4px 8px;
-          margin-right: 8px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        .update-btn {
-          background: #28a745;
-          color: white;
-        }
-        .delete-btn {
-          background: #dc3545;
-          color: white;
-        }
-      </style>
-      <div class="user-container">
-        <div class="user-field">
-          <span>ID:</span>
-          <div class="user-value">${this.getAttribute('user-id')}</div>
-        </div>
-        <div class="user-field">
-          <span>Name:</span>
-          <div class="user-value">${this.getAttribute('name')}</div>
-        </div>
-        <div class="user-field">
-          <span>Email:</span>
-          <div class="user-value">${this.getAttribute('email')}</div>
-        </div>
-        <div class="actions">
-          <button class="update-btn">Update</button>
-          <button class="delete-btn">Delete</button>
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+      <div class="card mb-3">
+        <div class="card-body">
+          <div class="mb-2">
+            <strong class="me-2">ID:</strong>
+            <span class="text-secondary">${this.getAttribute('user-id')}</span>
+          </div>
+          <div class="mb-2">
+            <strong class="me-2">Name:</strong>
+            <span class="text-secondary">${this.getAttribute('name')}</span>
+          </div>
+          <div class="mb-2">
+            <strong class="me-2">Email:</strong>
+            <span class="text-secondary">${this.getAttribute('email')}</span>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-primary me-2 update-btn">Update</button>
+            <button class="btn btn-danger delete-btn">Delete</button>
+          </div>
         </div>
       </div>
     `;

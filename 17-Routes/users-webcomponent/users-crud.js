@@ -15,7 +15,6 @@ class UsersCrud extends HTMLElement {
     this.render();
     this.loadUsers();
     setTimeout(() => {
-      // Update event listeners to use the shadowRoot
       this.shadowRoot.addEventListener("click", (e) => {
         const editButton = e.target.closest('.edit');
         const deleteButton = e.target.closest('.delete');
@@ -44,30 +43,52 @@ class UsersCrud extends HTMLElement {
     this.shadowRoot.addEventListener("user-delete", (e) => this.handleDelete(e.detail.id));
 
     const addUserBtn = this.shadowRoot.querySelector("#addUserBtn");
-    const cancelAddUser = this.shadowRoot.querySelector("#cancelAddUser");
-    const saveNewUser = this.shadowRoot.querySelector("#saveNewUser");
+    const cancelAddUserBtn = this.shadowRoot.querySelector("#cancelAddUser");
+    const closeAddUserBtn = this.shadowRoot.querySelector("#addUserModal .btn-close");
+    const saveNewUserBtn = this.shadowRoot.querySelector("#saveNewUser");
     const filterInput = this.shadowRoot.querySelector("#filterInput");
     const userForm = this.shadowRoot.querySelector("#userForm");
     const updateUserForm = this.shadowRoot.querySelector("#updateUserForm");
-    const cancelUpdateUser = this.shadowRoot.querySelector("#cancelUpdateUser");
+    const cancelUpdateUserBtn = this.shadowRoot.querySelector("#cancelUpdateUser");
+    const closeUpdateUserBtn = this.shadowRoot.querySelector("#updateUserModal .btn-close");
 
-    if (!addUserBtn || !cancelAddUser || !saveNewUser || !filterInput || !userForm || !updateUserForm || !cancelUpdateUser) {
-      console.error("Some elements were not found in the DOM");
-      return;
+    if (addUserBtn) {
+      addUserBtn.addEventListener("click", () => this.showAddUserModal());
+    }
+    
+    if (cancelAddUserBtn) {
+      cancelAddUserBtn.addEventListener("click", () => this.hideAddUserModal());
     }
 
-    addUserBtn.addEventListener("click", () => this.showAddUserModal());
-    cancelAddUser.addEventListener("click", () => this.hideAddUserModal());
-    cancelUpdateUser.addEventListener("click", () => this.hideUpdateUserModal());
-    userForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.addUser();
-    });
-    updateUserForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.submitUpdateUser();
-    });
-    filterInput.addEventListener("input", (e) => this.filterUsers(e.target.value));
+    if (closeAddUserBtn) {
+      closeAddUserBtn.addEventListener("click", () => this.hideAddUserModal());
+    }
+    
+    if (cancelUpdateUserBtn) {
+      cancelUpdateUserBtn.addEventListener("click", () => this.hideUpdateUserModal());
+    }
+
+    if (closeUpdateUserBtn) {
+      closeUpdateUserBtn.addEventListener("click", () => this.hideUpdateUserModal());
+    }
+
+    if (userForm) {
+      userForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.addUser();
+      });
+    }
+
+    if (updateUserForm) {
+      updateUserForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        this.submitUpdateUser();
+      });
+    }
+
+    if (filterInput) {
+      filterInput.addEventListener("input", (e) => this.filterUsers(e.target.value));
+    }
   }
 
   setLoading(loading) {
@@ -82,283 +103,144 @@ class UsersCrud extends HTMLElement {
 
   render() {
     this.shadowRoot.innerHTML = `
+      <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
       <style>
-        .users-container {
-          max-width: 800px;
-          margin: 0 auto;
-          position: relative;
-        }
-        .search-container {
-          margin: 20px 0;
-        }
-        input {
-          padding: 8px;
-          width: 100%;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-        }
-        input:invalid {
-          border-color: #dc3545;
-        }
-        .header-container {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-        }
-        #addUserBtn {
-          padding: 8px 16px;
-          background-color: #007bff;
-          color: white;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-        }
-        #addUserBtn:hover {
-          background-color: #0056b3;
-        }
-        #addUserBtn:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
-        }
-
-        /* Table Styles */
-        .users-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin-top: 20px;
-          border-radius: 8px;
-          overflow: hidden;
-          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .users-table th,
-        .users-table td {
-          padding: 12px 15px;
-          text-align: left;
-          border-bottom: 1px solid #ddd;
-        }
-
-        .users-table th {
-          background-color: #f8f9fa;
-          font-weight: bold;
-          color: #333;
-        }
-
-        .users-table tr:hover {
-          background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .users-table .actions {
-          display: flex;
-          gap: 8px;
-        }
-
-        .users-table button {
-          padding: 6px 12px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
-          color: white;
-        }
-
-        .users-table button.edit {
-          background-color: #007bff;
-        }
-
-        .users-table button.delete {
-          background-color: #dc3545;
-        }
-
-        /* Theme Colors for Table */
-        .users-table.primary {
-          background-color: #007bff;
-          color: white;
-        }
-        .users-table.danger {
-          background-color: #dc3545;
-          color: white;
-        }
-        .users-table.success {
-          background-color: #28a745;
-          color: white;
-        }
-        .users-table.warning {
-          background-color: #ffc107;
-          color: black;
-        }
-        .users-table.light {
-          background-color: #f8f9fa;
-          color: black;
-        }
-
-        .users-table.primary th,
-        .users-table.danger th,
-        .users-table.success th {
-          background-color: rgba(255, 255, 255, 0.1);
-          color: white;
-        }
-
-        .users-table.warning th,
-        .users-table.light th {
-          background-color: rgba(0, 0, 0, 0.1);
-          color: black;
-        }
-
-        .users-table.primary td,
-        .users-table.danger td,
-        .users-table.success td {
-          border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .users-table.warning td,
-        .users-table.light td {
-          border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
         .modal {
-          display: none;
           position: fixed;
           top: 0;
           left: 0;
           width: 100%;
           height: 100%;
-          background-color: rgba(0, 0, 0, 0.5);
+          background-color: rgba(0, 0, 0, 0.7);
+          z-index: 1050;
+          display: none;
+          align-items: center;
+          justify-content: center;
+        }
+        .modal.show {
+          display: flex !important;
+        }
+        .modal-dialog {
+          position: relative;
+          width: 100%;
+          max-width: 500px;
+          margin: 1.75rem auto;
+          z-index: 1055;
         }
         .modal-content {
-          background-color: white;
-          margin: 15% auto;
-          padding: 20px;
-          border-radius: 5px;
-          width: 80%;
-          max-width: 500px;
+          background-color: #ffffff;
+          border-radius: 0.5rem;
+          box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
-        .modal input {
-          margin-bottom: 10px;
+        .modal-backdrop {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background-color: rgba(0, 0, 0, 0.7);
+          z-index: 1040;
         }
-        .modal-buttons {
-          display: flex;
-          justify-content: flex-end;
-          gap: 10px;
-          margin-top: 20px;
+        .modal-header {
+          background-color: #f8f9fa;
+          border-bottom: 1px solid #dee2e6;
+          border-top-left-radius: 0.5rem;
+          border-top-right-radius: 0.5rem;
         }
-        .modal-buttons button {
-          padding: 8px 16px;
-          border: none;
-          border-radius: 4px;
-          cursor: pointer;
+        .modal-body {
+          background-color: #ffffff;
         }
-        .modal-buttons button:disabled {
-          background-color: #ccc;
-          cursor: not-allowed;
+        .modal-footer {
+          background-color: #f8f9fa;
+          border-top: 1px solid #dee2e6;
+          border-bottom-left-radius: 0.5rem;
+          border-bottom-right-radius: 0.5rem;
         }
-        .save-btn {
-          background-color: #28a745;
-          color: white;
+        .form-control:focus {
+          border-color: #80bdff;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
-        .cancel-btn {
-          background-color: #dc3545;
-          color: white;
-        }
-        #loading {
-          display: none;
-          position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 1000;
-        }
-        .loading-spinner {
-          width: 50px;
-          height: 50px;
-          border: 5px solid #f3f3f3;
-          border-top: 5px solid #3498db;
-          border-radius: 50%;
-          animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        .error-message {
+        .invalid-feedback {
           color: #dc3545;
-          font-size: 0.8em;
-          margin-top: 4px;
+          font-size: 80%;
+          margin-top: 0.25rem;
         }
       </style>
-      <div class="users-container">
-        <div id="loading">
-          <div class="loading-spinner"></div>
+      <div class="container py-4">
+        <div id="loading" class="position-absolute top-50 start-50 translate-middle" style="display: none;">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
+        
         <div id="content">
-          <div class="header-container">
-            <h2>User Management</h2>
-            <button id="addUserBtn">Add New User</button>
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0">User Management</h2>
+            <button id="addUserBtn" class="btn btn-primary">Add New User</button>
           </div>
-          <div class="search-container">
-            <input id="filterInput" placeholder="Search by name or email..." />
+          
+          <div class="mb-4">
+            <input id="filterInput" class="form-control" placeholder="Search by name or email..." />
           </div>
+          
           <div id="usersList"></div>
         </div>
-      </div>
-      <div id="addUserModal" class="modal">
-        <div class="modal-content">
-          <h3>Add New User</h3>
-          <form id="userForm">
-            <div>
-              <input 
-                id="newUserName" 
-                placeholder="Enter name" 
-                required 
-                minlength="3"
-                pattern="[A-Za-z ]{3,}"
-              />
-              <div class="error-message" id="nameError"></div>
+
+        <!-- Add User Modal -->
+        <div id="addUserModal" class="modal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Add New User</h5>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="userForm">
+                  <div class="mb-3">
+                    <input id="newUserName" class="form-control" placeholder="Enter name" required minlength="3" pattern="[A-Za-z ]{3,}" />
+                    <div class="invalid-feedback" id="nameError"></div>
+                  </div>
+                  <div class="mb-3">
+                    <input id="newUserEmail" type="email" class="form-control" placeholder="Enter email" required />
+                    <div class="invalid-feedback" id="emailError"></div>
+                  </div>
+                  <div class="modal-footer px-0 pb-0">
+                    <button type="button" class="btn btn-secondary" id="cancelAddUser">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveNewUser">Save</button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div>
-              <input 
-                id="newUserEmail" 
-                type="email" 
-                placeholder="Enter email" 
-                required
-              />
-              <div class="error-message" id="emailError"></div>
-            </div>
-            <div class="modal-buttons">
-              <button type="button" class="cancel-btn" id="cancelAddUser">Cancel</button>
-              <button type="submit" class="save-btn" id="saveNewUser">Save</button>
-            </div>
-          </form>
+          </div>
         </div>
-      </div>
-      <div id="updateUserModal" class="modal">
-        <div class="modal-content">
-          <h3>Update User</h3>
-          <form id="updateUserForm">
-            <input type="hidden" id="updateUserId" />
-            <div>
-              <input 
-                id="updateUserName" 
-                placeholder="Enter name" 
-                required 
-                minlength="3"
-                pattern="[A-Za-z ]{3,}"
-              />
-              <div class="error-message" id="updateNameError"></div>
+
+        <!-- Update User Modal -->
+        <div id="updateUserModal" class="modal" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Update User</h5>
+                <button type="button" class="btn-close" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="updateUserForm">
+                  <input type="hidden" id="updateUserId" />
+                  <div class="mb-3">
+                    <input id="updateUserName" class="form-control" placeholder="Enter name" required minlength="3" pattern="[A-Za-z ]{3,}" />
+                    <div class="invalid-feedback" id="updateNameError"></div>
+                  </div>
+                  <div class="mb-3">
+                    <input id="updateUserEmail" type="email" class="form-control" placeholder="Enter email" required />
+                    <div class="invalid-feedback" id="updateEmailError"></div>
+                  </div>
+                  <div class="modal-footer px-0 pb-0">
+                    <button type="button" class="btn btn-secondary" id="cancelUpdateUser">Cancel</button>
+                    <button type="submit" class="btn btn-primary" id="saveUpdateUser">Save</button>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div>
-              <input 
-                id="updateUserEmail" 
-                type="email" 
-                placeholder="Enter email" 
-                required
-              />
-              <div class="error-message" id="updateEmailError"></div>
-            </div>
-            <div class="modal-buttons">
-              <button type="button" class="cancel-btn" id="cancelUpdateUser">Cancel</button>
-              <button type="submit" class="save-btn" id="saveUpdateUser">Save</button>
-            </div>
-          </form>
+          </div>
         </div>
       </div>
     `;
@@ -425,21 +307,16 @@ class UsersCrud extends HTMLElement {
   renderUsers(users) {
     const container = this.shadowRoot.querySelector("#usersList");
     if (!container) return;
-    
     container.innerHTML = "";
     
     if (users.length === 0) {
-      container.innerHTML = '<p>No users found.</p>';
+      container.innerHTML = '<div class="alert alert-info">No users found.</div>';
       return;
     }
 
-    // Get theme from attribute or default to light
-    const theme = this.getAttribute('theme') || 'light';
-
     const table = document.createElement('table');
-    table.className = `users-table ${theme}`;
+    table.className = 'table table-hover';
     
-    // Create table header
     const thead = document.createElement('thead');
     thead.innerHTML = `
       <tr>
@@ -450,16 +327,15 @@ class UsersCrud extends HTMLElement {
     `;
     table.appendChild(thead);
 
-    // Create table body
     const tbody = document.createElement('tbody');
     users.forEach((user) => {
       const tr = document.createElement('tr');
       tr.innerHTML = `
         <td>${user.name}</td>
         <td>${user.email}</td>
-        <td class="actions">
-          <button class="edit">Edit</button>
-          <button class="delete">Delete</button>
+        <td>
+          <button class="btn btn-sm btn-primary edit me-2">Edit</button>
+          <button class="btn btn-sm btn-danger delete">Delete</button>
         </td>
       `;
       tbody.appendChild(tr);
@@ -546,14 +422,25 @@ class UsersCrud extends HTMLElement {
   showAddUserModal() {
     const modal = this.shadowRoot.querySelector("#addUserModal");
     if (modal) {
-      modal.style.display = "block";
+      modal.classList.add('show');
+      modal.style.display = 'block';
+      document.body.classList.add('modal-open');
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      document.body.appendChild(backdrop);
     }
   }
 
   hideAddUserModal() {
     const modal = this.shadowRoot.querySelector("#addUserModal");
     if (modal) {
-      modal.style.display = "none";
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
     }
   }
 
@@ -604,14 +491,25 @@ class UsersCrud extends HTMLElement {
       nameInput.value = userData.name;
       emailInput.value = userData.email;
       idInput.value = userData.id;
-      modal.style.display = "block";
+      modal.classList.add('show');
+      modal.style.display = 'block';
+      document.body.classList.add('modal-open');
+      const backdrop = document.createElement('div');
+      backdrop.className = 'modal-backdrop fade show';
+      document.body.appendChild(backdrop);
     }
   }
 
   hideUpdateUserModal() {
     const modal = this.shadowRoot.querySelector("#updateUserModal");
     if (modal) {
-      modal.style.display = "none";
+      modal.classList.remove('show');
+      modal.style.display = 'none';
+      document.body.classList.remove('modal-open');
+      const backdrop = document.querySelector('.modal-backdrop');
+      if (backdrop) {
+        backdrop.remove();
+      }
     }
   }
 
