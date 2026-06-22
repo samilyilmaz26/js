@@ -1,0 +1,9 @@
+npm install
+npm run dev
+Access the app from your mobile
+Both your computer and mobile should be on the same Wi-Fi network.
+Find your computer’s local IP address (e.g., 192.168.1.5)
+On your mobile browser, open:
+http://192.168.1.5:5173
+You may need to allow your Vite dev server to listen on the network. You can run:
+vite --host

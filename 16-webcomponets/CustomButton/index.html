@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Button Web Component</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+
+        .demo-section {
+            margin: 20px 0;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 0;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Custom Button Web Component Demo</h1>
+
+    <div class="demo-section">
+        <h2>Default Styling</h2>
+        <div class="button-grid">
+            <custom-button text="Default Button"></custom-button>
+            <custom-button text="Click Me!" 
+            color="white" background-color="#007bff">
+        </custom-button>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Color Variations</h2>
+        <div class="button-grid">
+            <custom-button text="Primary" color="white" background-color="#007bff"></custom-button>
+            <custom-button text="Success" color="white" background-color="#28a745"></custom-button>
+            <custom-button text="Warning" color="black" background-color="#ffc107"></custom-button>
+            <custom-button text="Danger" color="white" background-color="#dc3545"></custom-button>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Font Styling</h2>
+        <div class="button-grid">
+            <custom-button text="Arial Font" font-family="Arial, sans-serif"></custom-button>
+            <custom-button text="Times Font" font-family="Times New Roman, serif"></custom-button>
+            <custom-button text="Monospace" font-family="Courier New, monospace"></custom-button>
+            <custom-button text="Large Text" font-size="18px" color="white" background-color="#6f42c1"></custom-button>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Custom Combinations</h2>
+        <div class="button-grid">
+            <custom-button text="Gradient Style" color="#fff" background-color="#ff6b6b" font-family="Georgia, serif"
+                font-size="16px">
+            </custom-button>
+            <custom-button text="Dark Theme" color="#00ff88" background-color="#2c3e50"
+                font-family="Verdana, sans-serif" font-size="14px">
+            </custom-button>
+            <custom-button text="Elegant" color="#8b4513" background-color="#f0e68c" font-family="Palatino, serif"
+                font-size="15px">
+            </custom-button>
+            <custom-button text="FB" 
+            color="yellow" background-color="blue" font-family="Palatino, serif"
+                font-size="15px">
+            </custom-button>
+            <custom-button text="GS" 
+            color="yellow" background-color="red" 
+            font-family="Palatino, serif"
+                font-size="15px">
+            </custom-button>
+        </div>
+    </div>
+
+    <script src="custom-button.js"></script>
+</body>
+
+</html>

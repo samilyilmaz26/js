@@ -1,0 +1,6 @@
+venv\Scripts\activate.bat
+.\venv\Scripts\activate
+(venv) C:\Users\YourName\project>
+deactivate
+
+pip show flask 

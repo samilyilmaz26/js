@@ -1,0 +1,89 @@
+ <!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Galatasaray Projesi</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        /* Ozel Galatasaray renk siniflari */
+        .gs-red {
+            background-color: #A3063A !important; 
+            border-color: #A3063A !important;
+            color: white !important;
+        }
+        .gs-yellow {
+            background-color: #FFD200 !important;
+            border-color: #FFD200 !important;
+            color: black !important;
+        }
+        /* Navbar yazi rengini sari yapma */
+        .navbar-dark .navbar-brand,
+        .navbar-dark .nav-link {
+            color: #FFD200 !important;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark gs-red">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Favori Takim</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link active" href="#">Ana Sayfa</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Tarihce</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        
+        <h1>GALATASARAY SPOR KULUBU</h1>
+        
+        <p class="lead text-gs-red">
+            Bu proje, Bootstrap siniflari kullanilarak favori takimim olan Galatasaray'in renkleriyle (Sari ve Kirmizi/Bordo) hazirlanmistir.
+        </p>
+        <p class="p-2 mb-4 gs-yellow text-dark rounded">
+            Lutfen HTML dosyanizi 28.10.2025 tarihine kadar UBIS sistemine yukleyiniz.
+        </p>
+
+        <h2 class="mt-5">Bootstrap Butonlar</h2>
+        <div class="d-grid gap-2 d-md-block">
+            <button class="btn gs-red" type="button">Kirmizi Buton</button>
+            <button class="btn gs-yellow" type="button">Sari Buton</button>
+        </div>
+
+        <h2 class="mt-5">Basit Tablo</h2>
+        <table class="table table-striped table-hover">
+            <thead class="gs-red text-white">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Isim</th>
+                    <th scope="col">Basari</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Fatih Terim</td>
+                    <td><span class="badge gs-yellow text-dark">Efsane</span></td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>UEFA Kupasi</td>
+                    <td><span class="badge gs-red">Kupa</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p class="text-muted text-center my-5">Dead line: 28.10.2025</p>
+
+    </div> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+</html>

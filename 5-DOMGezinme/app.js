@@ -11,7 +11,7 @@ value = drinks.firstElementChild
 value = drinks.lastElementChild
 value = drinks.children.length
 value = drinks.childElementCount
-drinks.children[1].textContent = "Yeşil Çay"
+ drinks.children[1].textContent = "Yeşil Çay"
 
 const container = document.querySelector(".table").children[1].children[1].children[2].textContent ="Meksika"
 value = container

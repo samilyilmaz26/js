@@ -1,0 +1,21 @@
+{
+  "name": "hesapmakinesi",
+  "version": "1.0.0",
+  "description": "A modern, reusable calculator web component built with vanilla JavaScript and Web Components API.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'No build step required for static files'",
+    "android": "npx cap run android",
+    "android:build": "npx cap build android",
+    "sync": "npx cap sync"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@capacitor/android": "^7.4.4",
+    "@capacitor/cli": "^7.4.4",
+    "@capacitor/core": "^7.4.4"
+  }
+}

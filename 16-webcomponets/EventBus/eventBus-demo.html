@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EventBus Demo</title>
+</head>
+<body style="font-family: sans-serif; padding: 20px;">
+  <h2>🧠 EventBus Example</h2>
+
+  <button id="subscribe">Subscribe to "greet"</button>
+  <button id="emit">Emit "greet" event</button>
+  <button id="unsubscribe">Unsubscribe</button>
+
+  <p>Open your browser console to see the output 👇</p>
+
+  <script>
+    // 1️⃣ Define EventBus
+    class EventBus {
+      constructor() {
+        this.listeners = {};
+      }
+
+      on(event, callback) {
+        if (!this.listeners[event]) this.listeners[event] = [];
+        this.listeners[event].push(callback);
+      }
+
+      off(event, callback) {
+        if (!this.listeners[event]) return;
+        this.listeners[event] = this.listeners[event].filter(cb => cb !== callback);
+      }
+
+      emit(event, detail) {
+        if (!this.listeners[event]) return;
+        this.listeners[event].forEach(cb => cb(detail));
+      }
+    }
+
+    // 2️⃣ Create a shared instance
+    const eventBus = new EventBus();
+
+    // 3️⃣ Define a listener function
+    function greetUser(name) {
+      console.log(`👋 Hello, ${name}!`);
+    }
+
+    // 4️⃣ Hook up the buttons
+    const subscribeBtn = document.getElementById('subscribe');
+    const emitBtn = document.getElementById('emit');
+    const unsubscribeBtn = document.getElementById('unsubscribe');
+
+    subscribeBtn.addEventListener('click', () => {
+      eventBus.on('greet', greetUser);
+      console.log('✅ Subscribed to "greet" event');
+    });
+
+    emitBtn.addEventListener('click', () => {
+      eventBus.emit('greet', 'Alice');
+    });
+
+    unsubscribeBtn.addEventListener('click', () => {
+      eventBus.off('greet', greetUser);
+      console.log('❌ Unsubscribed from "greet" event');
+    });
+  </script>
+</body>
+</html>
